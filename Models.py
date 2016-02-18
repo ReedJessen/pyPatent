@@ -12,7 +12,7 @@ class Patent(object):
 
         #classifications
         self.app_type = None
-
+        self.country = None
 
         #relationships
         self.inventors = None
@@ -36,8 +36,15 @@ class Patent(object):
         self.num_of_claims = None
         self.num_of_citations = None
 
-    def populate(self):
-        data = Populators.get_patent(self.grant_number)
+    def populate(self,office_code):
+        if office_code == 'US':
+            self.US()
+        if office_code == 'EPO':
+            self.EPO()
+
+    def US(self):
+        """Populates patent object from PatentsView.org"""
+        data = Populators.get_US(self.grant_number)
 
         if data['total_patent_count'] != 1:
             print("Error: Unique Identifier is Ambiguous")
